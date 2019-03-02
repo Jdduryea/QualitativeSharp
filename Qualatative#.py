@@ -97,8 +97,7 @@ def parse_line(line, line_number):
 		if "say" == tokens[0]:
 			var = tokens[1]
 			print(str(var)+" = " + str(SYM_TABLE[var]))
-		#else:
-		#	print ("error on line " + str(line_number))
+		
 
 
 def isVar(token):
@@ -122,43 +121,37 @@ def eval_op(expr1, op, expr2):
 
 def eval_expr(remaining_tokens):
 
-	# Case 0: var = var
-	# Case 2: var = EXPR op var
-	# case 3: var = var op EXPR
-	# case 4: var = var op var
 
 	val_accumulator = 1
-
-
 	
-	# Case 1: var = var op EXPR
-	if isVar(remaining_tokens[0]) and toParseToken(remaining_tokens[1]) in OPS:
+	# Case 0: var = var op EXPR
+	if isVar(remaining_tokens[0]) and not isVar(remaining_tokens[-1]) and toParseToken(remaining_tokens[1]) in OPS:
 		op = toParseToken(remaining_tokens[1])
 		var = remaining_tokens[0]
-		eval_op(SYM_TABLE[var], op, eval_expr(remaining_tokens[2:]))
-		# if op == PLUS:
-		# 	val_accumulator = SYM_TABLE[var] + eval_expr(remaining_tokens[2:])
-		# if op == MINUS:
-		# 	val_accumulator = SYM_TABLE[var] + eval_expr(remaining_tokens[2:])
-
-	# Case 2: var = EXPR op var
+		val_accumulator = eval_op(SYM_TABLE[var], op, eval_expr(remaining_tokens[2:]))
+		
+	# Case 1: var = EXPR op var
 	elif not isVar(remaining_tokens[0]) and isVar(remaining_tokens[-1]):
-		var = remaining_tokens[0]
-		op = toParseToken(remaining_tokens[1])
-		expr = eval_expr(remaining_tokens[-1])
+		var = remaining_tokens[-1]
+		op = toParseToken(remaining_tokens[-2])
+		expr = eval_expr(remaining_tokens[:-2])
 
-	# Case 3: var = var op var
+		val_accumulator = eval_op(SYM_TABLE[var], op, expr)
+
+	# Case 2: var = var op var
 	elif isVar(remaining_tokens[0]) and isVar(remaining_tokens[-1]):
-		op = toParseToken(remaining_tokens[1])
 
-	# Case 1:  var = EXPR
+		var1 = remaining_tokens[0]
+		op = toParseToken(remaining_tokens[1])
+		var2 = remaining_tokens[2]
+		val_accumulator = eval_op(SYM_TABLE[var1], op, SYM_TABLE[var2])
+
+	# Case 3:  var = EXPR
 	else:
 		for token in remaining_tokens:
 			if token != "\n":
 				parseToken = toParseToken(token)
 				val_accumulator *= getValue(parseToken)
-
-	# Case 3:
 
 
 	return val_accumulator
