@@ -18,7 +18,7 @@ MINUS = "-"
 
 # qualifiers
 REALLY = "really"
-FUCKING = "fucking"
+EFING = "f**king"
 KINDA = "kinda"
 
 
@@ -35,13 +35,13 @@ values[TINY] = -100000
 
 
 values[REALLY] = 6
-values[FUCKING] = 19
+values[EFING] = 19
 values[KINDA] = 3
 
 
 BIG_QUALIFIERS = [BIG, MASSIVE]
 SMALL_QUALIFIERS = [SMALL, TINY]
-INCREASERS = [REALLY, FUCKING]
+INCREASERS = [REALLY, EFING]
 
 TOKEN_MAP = {}
 TOKEN_MAP["big"] = BIG
@@ -50,7 +50,7 @@ TOKEN_MAP["small"] = SMALL
 TOKEN_MAP["tiny"] = TINY
 TOKEN_MAP["big"] = BIG
 TOKEN_MAP["really"] = REALLY
-TOKEN_MAP["fucking"] = FUCKING
+TOKEN_MAP[EFING] = EFING
 TOKEN_MAP["kinda"] = KINDA
 
 TOKEN_MAP["+"] = PLUS
